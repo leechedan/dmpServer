@@ -12,7 +12,7 @@ import org.apache.hadoop.hbase.util.Bytes;
  */
 public class esateInfoAsscMapper implements RowMapper<assc> {
     @Override
-    public assc mapRow(Result result, int rowNum) throws Exception {
+    public assc mapRow(Result result, int rowNum, String family) throws Exception {
         assc o = (assc) BeanUtil.mapRow(result, bas.class);
         o.setRowName(Bytes.toString(result.getRow()));
         return o;

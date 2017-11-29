@@ -13,7 +13,7 @@ import org.apache.hadoop.hbase.util.Bytes;
  */
 public class esteInfoBasMapper implements RowMapper<bas> {
     @Override
-    public bas mapRow(Result result, int rowNum) throws Exception {
+    public bas mapRow(Result result, int rowNum, String family) throws Exception {
         bas o = (bas) BeanUtil.mapRow(result, bas.class);
         o.setRowName(Bytes.toString(result.getRow()));
         return o;

@@ -67,8 +67,9 @@ public interface HbaseOperations {
      * @param <T>       mapper type
      * @return a list of objects mapping the scanned rows
      */
-    <T> List<T> find(String tableName, final Scan scan, final RowMapper<T> mapper);
+    <T> List<T> find(String tableName, final Scan scan, final RowMapper<T> mapper, String family);
 
+    <T> List<T> find(String tableName, final Scan scan, final RowMapper<T> mapper);
     /**
      * Gets an individual row from the given table. The content is mapped by the given action.
      *

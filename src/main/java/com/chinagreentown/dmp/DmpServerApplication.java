@@ -2,23 +2,32 @@ package com.chinagreentown.dmp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+
+import java.util.concurrent.TimeUnit;
+//import org.springframework.boot.builder.SpringApplicationBuilder;
+//import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class DmpServerApplication extends SpringBootServletInitializer {
+public class DmpServerApplication
+//        extends SpringBootServletInitializer
+{
 
     public static void main(String[] args) {
         // 设置windows系统下hadoop环境
-        System.setProperty("hadoop.home.dir", "D:\\hadoop-2.7.3");
+        System.setProperty("hadoop.home.dir", "D:\\tool\\hadoop-2.7.3");
         SpringApplication.run(DmpServerApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(
-            SpringApplicationBuilder application) {
-        return application.sources(DmpServerApplication.class);
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure(
+//            SpringApplicationBuilder application) {
+//        return application.sources(DmpServerApplication.class);
+//    }
 
 
     //	@Component
@@ -33,14 +42,14 @@ public class DmpServerApplication extends SpringBootServletInitializer {
 //
 //	}
 //
-//	@Bean
-//	public EmbeddedServletContainerFactory servletContainer() {
-//		TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-//		factory.setPort(8888);
-//		factory.setSessionTimeout(10, TimeUnit.MINUTES);
-//		factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404.html"));
-//		return factory;
-//	}
+	@Bean
+	public EmbeddedServletContainerFactory servletContainer() {
+		TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+		factory.setPort(8888);
+		factory.setSessionTimeout(10, TimeUnit.MINUTES);
+		factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404.html"));
+		return factory;
+	}
 //
 //
 //	@Bean

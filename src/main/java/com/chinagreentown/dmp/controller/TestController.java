@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,9 @@ import java.util.Map;
 @RequestMapping("test")
 public class TestController {
 
-    @Autowired
+    @Resource
     private PrecisionMarketingService testservice;
-    @Autowired
+    @Resource
     private BaseQueryService q;
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)

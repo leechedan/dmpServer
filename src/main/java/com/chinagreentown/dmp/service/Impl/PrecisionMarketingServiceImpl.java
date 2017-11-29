@@ -167,7 +167,7 @@ public class PrecisionMarketingServiceImpl implements PrecisionMarketingService 
         SubstringComparator cpmparator = new SubstringComparator(EsateCode);
         SingleColumnValueExcludeFilter singleColumnValueExcludeFilter = new SingleColumnValueExcludeFilter("bas".getBytes(), "house_code".getBytes(), CompareFilter.CompareOp.EQUAL, cpmparator);
         filterList.addFilter(singleColumnValueExcludeFilter);
-        basequery.getEsateBas(EsateCode, filterList)
+        basequery.getEsateBas(EsateCode, filterList);
 
 
         return null;

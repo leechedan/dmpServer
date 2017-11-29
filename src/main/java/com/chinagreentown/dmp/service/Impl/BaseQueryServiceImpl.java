@@ -14,6 +14,8 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.List;
 @Service
 public class BaseQueryServiceImpl implements BaseQueryService {
 
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private HbaseTemplate hbaseservice;
@@ -118,7 +121,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
 
     @Override
     public List<bas> getEsateBas(String esateCode, FilterList list) {
-        can scan = new Scan();
+        Scan scan = new Scan();
         scan.setFilter(list);
         scan.addFamily(Bytes.toBytes("bas"));
         List<bas> bass = hbaseservice.find(este_info, scan, new esteInfoBasMapper());

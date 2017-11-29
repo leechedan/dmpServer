@@ -6,6 +6,8 @@ import com.chinagreentown.dmp.pojo.UsrPoiInfoPojo.poi;
 import com.chinagreentown.dmp.pojo.este_info.assc;
 import com.chinagreentown.dmp.pojo.este_info.bas;
 import org.apache.hadoop.hbase.filter.FilterList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

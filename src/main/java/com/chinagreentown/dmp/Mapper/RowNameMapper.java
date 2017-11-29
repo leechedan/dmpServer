@@ -10,7 +10,7 @@ import org.apache.hadoop.hbase.client.Result;
  */
 public class RowNameMapper implements RowMapper<String> {
     @Override
-    public String mapRow(Result result, int rowNum) throws Exception {
+    public String mapRow(Result result, int rowNum, String family) throws Exception {
         return org.apache.hadoop.hbase.util.Bytes.toString(result.getRow());
     }
 }

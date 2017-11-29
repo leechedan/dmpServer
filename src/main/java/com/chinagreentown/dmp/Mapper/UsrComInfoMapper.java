@@ -13,7 +13,7 @@ public class UsrComInfoMapper implements RowMapper<com> {
 
 
     @Override
-    public com mapRow(Result result, int rowNum) throws Exception {
+    public com mapRow(Result result, int rowNum, String family) throws Exception {
         com o = (com) BeanUtil.mapRow(result, com.class);
         o.setRowName(Bytes.toString(result.getRow()));
         return o;

@@ -13,7 +13,7 @@ public class UsrPoiInfoMapper implements RowMapper<poi> {
 
 
     @Override
-    public poi mapRow(Result result, int rowNum) throws Exception {
+    public poi mapRow(Result result, int rowNum, String family) throws Exception {
         poi o = (poi) BeanUtil.mapRow(result, poi.class);
         o.setRowName(Bytes.toString(result.getRow()));
         return o;

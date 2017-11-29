@@ -12,9 +12,8 @@ import org.apache.hadoop.hbase.util.Bytes;
  */
 public class UsrBasAttrMapper implements RowMapper<attr> {
 
-
     @Override
-    public attr mapRow(Result result, int rowNum) throws Exception {
+    public attr mapRow(Result result, int rowNum, String family) throws Exception {
         attr o = (attr) BeanUtil.mapRow(result, attr.class);
         o.setRowName(Bytes.toString(result.getRow()));
         return o;

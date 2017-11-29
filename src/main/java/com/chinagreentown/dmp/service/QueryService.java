@@ -1,6 +1,6 @@
 package com.chinagreentown.dmp.service;
 
-import com.chinagreentown.dmp.Cache.SystemCache;
+import com.chinagreentown.dmp.Mapper.MapRowMapper;
 import com.chinagreentown.dmp.Mapper.PeopleRowMapper;
 import com.chinagreentown.dmp.api.HbaseTemplate;
 import com.chinagreentown.dmp.pojo.PeopleDto;
@@ -27,14 +27,24 @@ import java.util.*;
 
 @Service
 public class QueryService {
+
+    MapRowMapper mapRowMapper = new MapRowMapper();
+
+    PeopleRowMapper peopleRowMapper = new PeopleRowMapper();
+
     @Autowired
     private HbaseTemplate hbaseTemplate;
 
-    public List<PeopleDto> query(String startRow, String stopRow) {
+    public List<PeopleDto> query(String table, String startRow, String stopRow) {
         Scan scan = new Scan(Bytes.toBytes(startRow), Bytes.toBytes(stopRow));
         scan.setCaching(5000);
-        List<PeopleDto> dtos = this.hbaseTemplate.find("t_user", scan, new PeopleRowMapper());
+        List<PeopleDto> dtos = this.hbaseTemplate.find(table, scan, new PeopleRowMapper());
         return dtos;
+    }
+
+    public List<Map<String, String>> query(String table, String family) {
+        List<Map<String, String>> dtos = this.hbaseTemplate.find(table, family, new MapRowMapper());
+		return dtos;
     }
 
     public PeopleDto query(String row) {

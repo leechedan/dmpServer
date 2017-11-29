@@ -12,12 +12,11 @@ public class PeopleRowMapper implements RowMapper<PeopleDto> {
     private static byte[] COLUMNFAMILY = "info".getBytes();
     private static byte[] PHONE = "phone".getBytes();
     private static byte[] AGE = "age".getBytes();
-
     @Override
-    public PeopleDto mapRow(Result result, int rowNum) throws Exception {
+    public PeopleDto mapRow(Result result, int rowNum, String family) throws Exception {
         PeopleDto dto = new PeopleDto();
-        String phone = Bytes.toString(result.getValue(COLUMNFAMILY, PHONE));
-        String age = Bytes.toString(result.getValue(COLUMNFAMILY, AGE));
+        String phone = Bytes.toString(result.getValue(family.getBytes(), PHONE));
+        String age = Bytes.toString(result.getValue(family.getBytes(), AGE));
         dto.setPhone(phone);
         dto.setAge(age);
         return dto;

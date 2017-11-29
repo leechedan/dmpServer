@@ -41,6 +41,7 @@ public class HbaseTemplate implements HbaseOperations {
 
     @Override
     public <T> T execute(String tableName, TableCallback<T> action) {
+        long start = System.currentTimeMillis();
         Assert.notNull(action, "Callback object must not be null");
         Assert.notNull(tableName, "No table specified");
 
@@ -57,6 +58,7 @@ public class HbaseTemplate implements HbaseOperations {
                 try {
                     table.close();
                     sw.stop();
+                    LOGGER.debug("last {} ms", (System.currentTimeMillis()-start)/1000);
                 } catch (IOException e) {
                     LOGGER.error("hbase资源释放失败");
                 }
@@ -69,7 +71,7 @@ public class HbaseTemplate implements HbaseOperations {
         Scan scan = new Scan();
         scan.setCaching(5000);
         scan.addFamily(Bytes.toBytes(family));
-        return this.find(tableName, scan, action);
+        return this.find(tableName, scan, action, family);
     }
 
     @Override
@@ -81,7 +83,18 @@ public class HbaseTemplate implements HbaseOperations {
     }
 
     @Override
-    public <T> List<T> find(String tableName, final Scan scan, final RowMapper<T> action) {
+    public <T> List<T> find(String tableName, Scan scan, RowMapper<T> mapper) {
+        byte[][] families = scan.getFamilies();
+        String family = "f";
+        if (families.length > 0) {
+            family = String.valueOf(families[0]);
+        }
+        return find(tableName, scan, mapper, family);
+    }
+
+    @Override
+    public <T> List<T> find(String tableName, final Scan scan, final RowMapper<T> action, String family) {
+        long start = System.currentTimeMillis();
         return this.execute(tableName, new TableCallback<List<T>>() {
             @Override
             public List<T> doInTable(Table table) throws Throwable {
@@ -95,11 +108,14 @@ public class HbaseTemplate implements HbaseOperations {
                     List<T> rs = new ArrayList<T>();
                     int rowNum = 0;
                     for (Result result : scanner) {
-                        rs.add(action.mapRow(result, rowNum++));
+                        if (rowNum == 200)
+                            break;
+                        rs.add(action.mapRow(result, rowNum++, family));
                     }
                     return rs;
                 } finally {
                     scanner.close();
+                    LOGGER.debug("last {} ms", (System.currentTimeMillis()-start)/1000);
                 }
             }
         });
@@ -137,7 +153,7 @@ public class HbaseTemplate implements HbaseOperations {
                             Bytes.toString(CellUtil.cloneRow(cell)));
                 }
                 System.out.println();
-                return mapper.mapRow(result, 0);
+                return mapper.mapRow(result, 0, familyName);
             }
         });
     }

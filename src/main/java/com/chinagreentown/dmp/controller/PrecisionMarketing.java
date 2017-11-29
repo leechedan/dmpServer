@@ -11,14 +11,11 @@ import com.chinagreentown.dmp.util.FakeData;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +30,9 @@ import java.util.Map;
 @RequestMapping("precisionmarketing")
 public class PrecisionMarketing {
 
-    @Autowired
+    @Resource
     private QueryService queryService;
-    @Autowired
+    @Resource
     private PrecisionMarketingService marketservice;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PrecisionMarketing.class);
@@ -97,18 +94,22 @@ public class PrecisionMarketing {
     }
 
     @RequestMapping(value = "/test")
-    public String test() {
-        List<PeopleDto> list = queryService.query("liming5", "liming6");
-        for (PeopleDto p : list) {
-            System.out.println(p);
+    @ResponseBody
+    public List<Map> test(@RequestParam(value = "table") String table,
+                       @RequestParam(value = "family") String family) {
+        List list = null;
+        if (table == null) {
+             list = queryService.query("t_user", "liming5", "liming6");
+        } else {
+             list = queryService.query(table, family);
         }
-        return list.toString();
+        return list;
     }
 
 
     @RequestMapping(value = "/v1.0")
     public ResponseEntity<Map<String, Object>> getUser() {
-        List<PeopleDto> list = queryService.query("liming5", "liming6");
+        List<PeopleDto> list = queryService.query("t_user", "liming5", "liming6");
         for (PeopleDto p : list) {
             System.out.println(p);
         }

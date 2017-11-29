@@ -16,7 +16,7 @@ public class UsrCNetBhvrMapper implements RowMapper<bhvr> {
 
 
     @Override
-    public bhvr mapRow(Result result, int rowNum) throws Exception {
+    public bhvr mapRow(Result result, int rowNum, String family) throws Exception {
         bhvr o = (bhvr) BeanUtil.mapRow(result, bhvr.class);
         return o;
     }
